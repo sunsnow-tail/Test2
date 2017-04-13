@@ -1,0 +1,73 @@
+﻿@model FileReader.Models.ResultErrors
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model != null && Model.FileErrors != null && Model.FileErrors.Count() > 0)
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileErrors[0].FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileErrors[0].Error)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileErrors[0].RowData)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.FileErrors)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Error)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RowData)
+                </td>
+            </tr>
+        }
+
+        <!-- pager -->
+        @if (Model.Pager.EndPage > 1)
+        {
+            <ul class="pagination">
+                @if (Model.Pager.CurrentPage > 1)
+                {
+                    <li>
+                        <a href="~/Home/Errors">First</a>
+                    </li>
+                            <li>
+                                <a href="~/Home/Errors?page=@(Model.Pager.CurrentPage - 1)">Previous</a>
+                            </li>
+                }
+
+                @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                {
+                    <li class="@(page == Model.Pager.CurrentPage ? "active" : "")">
+                        <a href="~/Home/Errors?page=@page">@page</a>
+                    </li>}
+
+                @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                {
+                    <li>
+                        <a href="~/Home/Errors?page=@(Model.Pager.CurrentPage + 1)">Next</a>
+                    </li>
+                            <li>
+                                <a href="~/Home/Errors?page=@(Model.Pager.TotalPages)">Last</a>
+                            </li>
+                }
+            </ul>    
+        }
+
+    </table>
+}

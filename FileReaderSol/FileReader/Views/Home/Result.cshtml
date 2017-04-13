@@ -1,0 +1,79 @@
+﻿@model FileReader.Models.ResultData
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model == null || Model.FileData == null || Model.FileData.Count() == 0)
+{
+    <h3>
+        Please, select files to load
+    </h3>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileData[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileData[0].ISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileData[0].AUTHOR)
+            </th>
+            <th></th>
+        </tr>
+    
+            @foreach (var item in Model.FileData)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ISBN)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AUTHOR)
+                    </td>
+                </tr>
+            }
+        
+        <!-- pager -->
+        @if (Model.Pager.EndPage > 1)
+        {
+            <ul class="pagination">
+                @if (Model.Pager.CurrentPage > 1)
+                {
+                    <li>
+                        <a href="~/Home/Result">First</a>
+                    </li>
+                    <li>
+                        <a href="~/Home/Result?page=@(Model.Pager.CurrentPage - 1)">Previous</a>
+                    </li>
+                }
+
+                @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                {
+                    <li class="@(page == Model.Pager.CurrentPage ? "active" : "")">
+                        <a href="~/Home/Result?page=@page">@page</a>
+                    </li>}
+
+                @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                {
+                    <li>
+                        <a href="~/Home/Result?page=@(Model.Pager.CurrentPage + 1)">Next</a>
+                    </li>
+                    <li>
+                        <a href="~/Home/Result?page=@(Model.Pager.TotalPages)">Last</a>
+                    </li>
+                }
+            </ul>
+        }
+                  
+    </table>
+}
